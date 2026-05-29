@@ -769,3 +769,15 @@ section {
     display: none;
   }
 }
+
+.footer-link {
+  color: var(--color-teal-light);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
