@@ -1,6 +1,6 @@
 # 🔒 env-secret-lock
 
-> **Fast, local-first, zero-dependency environment secret manager CLI with Git protection and in-memory runtime execution.**
+> **Stop leaking your API keys. A local-first, zero-dependency CLI to encrypt your .env files and prevent accidental git commits.**
 
 `env-secret-lock` solves the massive problem of **"secret sprawl"**—the dangerous practice of keeping sensitive API keys, database credentials, and tokens in unencrypted plaintext `.env` files on your laptop, or accidentally committing them to GitHub.
 
