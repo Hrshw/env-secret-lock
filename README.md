@@ -1,97 +1,151 @@
-# 🔒 secret-lock
+# 🔒 env-secret-lock
 
 > **Fast, local-first, zero-dependency environment secret manager CLI with Git protection and in-memory runtime execution.**
 
-`secret-lock` solves the massive problem of **"secret sprawl"**—the dangerous practice of storing sensitive API keys, database credentials, and tokens in unencrypted plaintext `.env` files on your computer, or accidentally committing them to GitHub. 
+`env-secret-lock` solves the massive problem of **"secret sprawl"**—the dangerous practice of keeping sensitive API keys, database credentials, and tokens in unencrypted plaintext `.env` files on your laptop, or accidentally committing them to GitHub.
 
-Unlike heavy cloud platforms (like HashiCorp Vault or Infisical), `secret-lock` is a **100% local, lightweight, zero-dependency** tool designed for solo developers and agile teams who value speed, privacy, and frictionless security.
+Unlike heavy cloud platforms (like HashiCorp Vault or Infisical), `env-secret-lock` is a **100% local, lightweight, zero-dependency** utility designed for solo developers, micro-teams, and side projects who value speed, privacy, and frictionless security.
 
 ---
 
-## ✨ Features
+## ✨ Core Features
 
 - 🛡️ **AES-256-GCM Encryption:** Plaintext files are encrypted at rest using industry-grade, authenticated AES-256-GCM and robust PBKDF2 key derivation.
-- 🚀 **Runtime Injection:** Secrets are decrypted directly into your application process memory (`process.env`) on boot. Plaintext secrets **never touch the disk**, preventing physical access theft.
+- 🚀 **Zero-Disk Runtime Injection:** Secrets are decrypted directly into your application process memory (`process.env`) on boot. Plaintext secrets **never touch the disk**, protecting against physical machine access theft.
 - 🎣 **Git-Guard Hook:** A single command installs an intelligent, automated Git `pre-commit` hook that blocks commits of raw `.env` files and guides you on how to secure them.
 - ⚡ **Zero Dependencies:** Auditable and lighting-fast. Built strictly with standard Node.js standard libraries and `commander.js` for clean execution.
 - 🤝 **Trust-First:** 100% open source. Audits are simple, and your keys never leave your machine—no servers, no telemetry, no leaks.
 
 ---
 
-## 🚀 Quickstart in 30 Seconds
+## 🚀 The Developer Onboarding Guide (Step-by-Step)
+
+Getting started with `env-secret-lock` takes under 1 minute. Follow this workflow to secure a project:
 
 ### 1. Installation
-Install `env-secret-lock` globally:
+Install the package globally on your machine:
 ```bash
 npm install -g env-secret-lock
 ```
-*Or run dynamically without installing:* `npx secret-lock --help`
+*Or run dynamically without installing:* `npx env-secret-lock --help`
 
-### 2. Encrypt Your Plaintext Secrets
+### 2. Create your Plaintext Secrets
+Create a standard plaintext `.env` file at the root of your project containing your secrets:
+```ini
+PORT=3000
+DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main
+API_KEY=sk_live_51Ny8BzH...
+```
+
+### 3. Lock & Encrypt your `.env` file
 Turn your raw `.env` file into a highly secure, authenticated `.env.enc` file:
 ```bash
 secret-lock encrypt
 ```
-You will be securely prompted to enter and confirm your master password. 
-*(Once encrypted, you can safely add your plaintext `.env` to your `.gitignore`!)*
+- You will be securely prompted to enter a **Master Password**. Choose a strong password and keep it safe!
+- Confirm the password.
+- **Result:** A secure `.env.enc` file will be created in your directory.
 
-### 3. Run Your Application with Secrets
-Inject your secrets directly into your application's memory during runtime without creating any plaintext files on disk:
+### 4. Delete the plaintext `.env` file (CRITICAL)
+Once your secrets are safely locked inside `.env.enc`, delete the plaintext file from your disk:
+```bash
+# Deletes the raw plaintext secrets from your machine
+rm .env
+```
+*(We have also automatically configured your project's `.gitignore` to prevent any future plaintext `.env` files from being committed.)*
+
+### 5. Run your Application with Secrets
+Boot your application with your secrets safely decrypted directly into memory:
 ```bash
 secret-lock run "node index.js"
 ```
-You will be prompted for your master password, after which the CLI boots your app with all secrets loaded instantly into `process.env`.
+*(Simply type in your master password when prompted, and your secrets are instantly active inside your code via `process.env.API_KEY`!)*
 
-**CI/CD or Automated Environments:**
-Simply export the master password as an environment variable and it will run non-interactively:
-```bash
-export SECRET_LOCK_PASSWORD="your-master-password"
-secret-lock run "npm start"
+---
+
+## 🔄 How to Add or Edit Secrets in the Future
+
+If you ever need to change a database password, add a new API key, or edit any configuration value, follow this secure loop:
+
+```mermaid
+graph TD
+    A[Need to Edit Secrets] --> B[Run: secret-lock decrypt]
+    B --> C[Decrypts .env.enc back to plaintext .env]
+    C --> D[Open .env and edit your secrets]
+    D --> E[Run: secret-lock encrypt]
+    E --> F[Delete plaintext .env file again]
+    F --> G[Project is Secure!]
 ```
 
-### 4. Enable Git-Guard Protection
-Prevent embarrassing secret leaks. Install the pre-commit blocker hook:
+1. **Decrypt the file back to plaintext:**
+   ```bash
+   secret-lock decrypt
+   ```
+   *Enter your master password when prompted. Your plaintext `.env` file is restored.*
+
+2. **Open `.env` and make your edits** (e.g. adding `STRIPE_KEY=sk_test_...`).
+
+3. **Re-encrypt your updated secrets:**
+   ```bash
+   secret-lock encrypt
+   ```
+   *Enter and confirm your master password to update `.env.enc`.*
+
+4. **Delete the plaintext `.env` file** to keep your machine 100% secure!
+
+---
+
+## 🛡️ Git-Guard Blocker (Leaked Secret Prevention)
+
+Accidentally committing `.env` files to Git is the most common cause of credential leaks. `env-secret-lock` blocks this out-of-the-box.
+
+To enable the blocker hook, run:
 ```bash
 secret-lock hook install
 ```
-If you ever attempt to run `git commit` with an unencrypted `.env` file staged, the commit will be blocked immediately with instructions on how to secure it.
+If you or a teammate ever attempt to commit an unencrypted `.env` file, the commit will be blocked immediately, displaying the following message:
+
+```text
+==============================================================
+🚨  SECURITY WARNING: Plaintext secrets detected!  🚨
+==============================================================
+You are trying to commit plaintext environment file(s):
+
+  -> .env
+
+To protect your credentials, commit has been blocked.
+Please follow these steps:
+  1. Unstage the raw file(s):
+     git restore --staged .env
+  2. Encrypt your credentials using secret-lock CLI:
+     secret-lock encrypt .env
+  3. Add the plaintext file name to your .gitignore
+==============================================================
+```
+
+*To remove the hook at any time, run: `secret-lock hook uninstall`.*
 
 ---
 
-## 🔒 Security Architecture (How it Works)
+## 🤖 CI/CD & Automated Environments (Non-Interactive Run)
 
-`secret-lock` uses standard, battle-tested cryptographic primitives built directly into Node.js:
-
-1. **Key Derivation (PBKDF2):**
-   When you supply a master password, the tool uses `crypto.pbkdf2Sync` to derive a 256-bit cryptographic key using:
-   - **HMAC-SHA256** hashing
-   - **100,000 iterations** (highly resistant to GPU brute-forcing)
-   - A unique, cryptographically random **16-byte salt** generated per encryption
-
-2. **Authenticated Encryption (AES-256-GCM):**
-   `secret-lock` encrypts your environment file using the `aes-256-gcm` algorithm. 
-   - A new **12-byte Initialization Vector (IV)** is generated randomly for every encryption block.
-   - GCM generates a **16-byte authentication tag** (stored alongside the ciphertext). During decryption, the cryptographic module checks this tag to ensure that the file has not been tampered with, corrupted, or altered by anyone at rest.
-
----
-
-## 🛠️ Commands Reference
+If you are running your application in an automated environment (such as a GitHub Action, Docker container, or cloud host like Heroku/Vercel/Render) where you cannot interactively type in a password, simply export the master password as an environment variable:
 
 ```bash
-# Encrypts a plaintext file (defaults to '.env') -> creates '.env.enc'
-secret-lock encrypt [file]
+# 1. Export your master password
+export SECRET_LOCK_PASSWORD="your-master-password"
 
-# Decrypts an encrypted file back into plaintext (defaults to '.env.enc')
-secret-lock decrypt [file]
-
-# Run a process with decrypted secrets loaded in-memory
-secret-lock run <command> [options]
-# Options:
-#  -f, --file <path>   Specify a custom encrypted file (defaults to .env.enc)
-
-# Install or uninstall the Git pre-commit guard
-secret-lock hook [install|uninstall]
+# 2. Boot the runtime injector
+secret-lock run "npm start"
 ```
+`env-secret-lock` will automatically read `SECRET_LOCK_PASSWORD` and bypass the interactive keyboard prompt.
+
+---
+
+## 🔒 Cryptographic Specifications
+
+- **Key Derivation (PBKDF2):** Derives a 256-bit key from your master password using `crypto.pbkdf2Sync` with a unique **16-byte random salt** per operation, and **100,000 iterations** of **HMAC-SHA256**.
+- **Authenticated Encryption (AES-256-GCM):** Uses a random **12-byte initialization vector (IV)** and registers a **16-byte authentication tag** for every encryption. Decryption automatically validates the authentication tag to ensure the encrypted data has not been modified or corrupted at rest.
 
 ---
 
