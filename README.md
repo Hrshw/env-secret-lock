@@ -1,5 +1,9 @@
 # 🔒 env-secret-lock
 
+[![npm version](https://img.shields.io/npm/v/env-secret-lock.svg?color=green)](https://www.npmjs.com/package/env-secret-lock)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/Hrshw/env-secret-lock.svg?style=social)](https://github.com/Hrshw/env-secret-lock/stargazers)
+
 > **Stop leaking your API keys. A local-first, zero-dependency CLI to encrypt your .env files and prevent accidental git commits.**
 
 `env-secret-lock` solves the massive problem of **"secret sprawl"**—the dangerous practice of keeping sensitive API keys, database credentials, and tokens in unencrypted plaintext `.env` files on your laptop, or accidentally committing them to GitHub.
