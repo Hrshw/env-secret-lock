@@ -672,8 +672,23 @@ section {
 }
 
 .doc-block {
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--border-color);
+}
+
+.doc-block.active {
+  display: block;
+  animation: docFadeIn 0.35s forwards cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes docFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .doc-block:last-child {

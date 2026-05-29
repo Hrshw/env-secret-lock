@@ -287,7 +287,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
   }
 
   // ----------------------------------------------------
-  // Documentation Navigation Highlighting
+  // Documentation Navigation Highlighting (Tabbed Toggle)
   // ----------------------------------------------------
   docNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -296,9 +296,17 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
       link.classList.add('active');
 
       const targetId = link.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
       
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Hide all doc blocks
+      document.querySelectorAll('.doc-block').forEach(block => {
+        block.classList.remove('active');
+      });
+
+      // Show the targeted active doc block
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.classList.add('active');
+      }
     });
   });
 });
