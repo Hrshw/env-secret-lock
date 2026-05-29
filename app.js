@@ -61,13 +61,13 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
   // ----------------------------------------------------
   // Interactive Simulator Commands
   // ----------------------------------------------------
-  async function processCommand(rawCmd) {
+  async function processCommand(rawCmd, fromSimulation = false) {
     const cmd = rawCmd.trim();
     if (!cmd) return;
 
     createLine(`<span class="prompt">~/my-awesome-app $</span> ${cmd}`, 'input-line-echo');
 
-    if (isTyping) return;
+    if (isTyping && !fromSimulation) return;
 
     const lowerCmd = cmd.toLowerCase();
 
@@ -234,7 +234,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
 
       await typeCommand('git commit -m "add env file"');
       await sleep(500);
-      await processCommand('git commit -m "add env file"');
+      await processCommand('git commit -m "add env file"', true);
 
     } else if (flow === 'encrypt') {
       // Ensure plaintext .env is currently showing
@@ -245,7 +245,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
 
       await typeCommand('secret-lock encrypt');
       await sleep(500);
-      await processCommand('secret-lock encrypt');
+      await processCommand('secret-lock encrypt', true);
 
     } else if (flow === 'run-injected') {
       // Ensure it is encrypted first for a smooth demo
@@ -256,7 +256,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
 
       await typeCommand('secret-lock run "node index.js"');
       await sleep(500);
-      await processCommand('secret-lock run "node index.js"');
+      await processCommand('secret-lock run "node index.js"', true);
     }
 
     terminalInput.disabled = false;
