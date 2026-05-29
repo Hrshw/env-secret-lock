@@ -72,7 +72,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
     const lowerCmd = cmd.toLowerCase();
 
     if (lowerCmd === 'clear') {
-      const lines = terminalBody.querySelectorAll('.terminal-line');
+      const lines = terminalBody.querySelectorAll('.terminal-line:not(.input-line)');
       lines.forEach(line => line.remove());
       return;
     }
@@ -222,7 +222,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
     terminalInput.disabled = true;
 
     // Clear old screen
-    const lines = terminalBody.querySelectorAll('.terminal-line');
+    const lines = terminalBody.querySelectorAll('.terminal-line:not(.input-line)');
     lines.forEach(line => line.remove());
 
     if (flow === 'git-leak') {
