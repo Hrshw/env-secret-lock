@@ -223,7 +223,11 @@ body {
   height: 100%;
   z-index: -2;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.15;
+}
+
+body.light-theme #bg-3d-canvas {
+  opacity: 0.08;
 }
 
 /* Canvas Scaling Constraints for Padlock */
@@ -361,6 +365,12 @@ body {
 
 .hero-content {
   max-width: 650px;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-content h1, .hero-content p {
+  text-shadow: 0 4px 24px var(--bg-color), 0 0 10px var(--bg-color);
 }
 
 .hero-visual {
