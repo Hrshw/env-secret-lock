@@ -90,6 +90,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
     if (lowerCmd.startsWith('git commit')) {
       if (!isEncrypted) {
         // blocked!
+        if (window.triggerLockAnimation) window.triggerLockAnimation(false);
         createLine('==============================================================', 'warning');
         createLine('🚨  SECURITY WARNING: Plaintext secrets detected!  🚨', 'warning');
         createLine('==============================================================', 'warning');
@@ -107,6 +108,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
         fileEnv.classList.add('warning-pulse');
         setTimeout(() => fileEnv.classList.remove('warning-pulse'), 2000);
       } else {
+        if (window.triggerLockAnimation) window.triggerLockAnimation(true);
         createLine('[main a34b8c9] Secure commit successful', 'success');
         createLine(' 2 files changed, 44 insertions(+)', 'output');
         createLine(' create mode 100644 .env.enc', 'success');
@@ -135,6 +137,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
       fileEnvEnc.style.display = 'flex';
       setActiveFile(fileEnvEnc, '.env.enc', ENCRYPTED_ENV_JSON);
 
+      if (window.triggerLockAnimation) window.triggerLockAnimation(true, true);
       createLine('✔ Successfully encrypted!', 'success');
       createLine('Saved encrypted file to: <span class="cmd-text">/user/my-awesome-app/.env.enc</span>', 'success');
       createLine('💡 <span class="cmd-text">Important:</span> Keep this password safe. It is required to run your application!', 'output');
@@ -159,6 +162,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
       await sleep(1000);
       createLine('********', 'output');
 
+      if (window.triggerLockAnimation) window.triggerLockAnimation(true);
       createLine('✔ Secrets successfully injected into memory.', 'success');
       createLine('🚀 Launching command: <span class="cmd-text">node index.js</span><br>', 'success');
       await sleep(800);
@@ -309,4 +313,154 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
       }
     });
   });
+
+  // ----------------------------------------------------
+  // 2026 Interactive 3D WebGL Padlock (Three.js Engine)
+  // ----------------------------------------------------
+  function init3DLock() {
+    const container = document.getElementById('canvas-3d-container');
+    if (!container) return;
+
+    // 1. Create Scene, Camera and WebGL Renderer with Alpha transparent background
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 8;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // 2. Lock Geometry Group (Contains body, keyhole and animated shackle)
+    const lockGroup = new THREE.Group();
+    lockGroup.position.y = -0.2;
+    scene.add(lockGroup);
+
+    // Metallic Violet Material for the Body
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: 0x8b5cf6, // Purple
+      metalness: 0.85,
+      roughness: 0.15
+    });
+
+    // Metallic Teal/Cyan Material for the Shackle
+    const shackleMat = new THREE.MeshStandardMaterial({
+      color: 0x14b8a6, // Cyan/Teal
+      metalness: 0.9,
+      roughness: 0.1
+    });
+
+    // Dark inset material for the keyhole
+    const darkMat = new THREE.MeshBasicMaterial({ color: 0x070b13 });
+
+    // a. Create Padlock Body (Rounded Cylinder)
+    const bodyGeom = new THREE.CylinderGeometry(1.4, 1.4, 1.8, 32);
+    const body = new THREE.Mesh(bodyGeom, bodyMat);
+    body.position.y = -0.5;
+    lockGroup.add(body);
+
+    // b. Create Keyhole on the front
+    const keyholeGeom = new THREE.CylinderGeometry(0.18, 0.18, 0.1, 16);
+    const keyhole = new THREE.Mesh(keyholeGeom, darkMat);
+    keyhole.rotation.x = Math.PI / 2;
+    keyhole.position.z = 1.36; // Just slightly exceeding body cylinder
+    keyhole.position.y = -0.5;
+    lockGroup.add(keyhole);
+
+    // c. Create Padlock Shackle Group (To allow sliding animation)
+    const shackleGroup = new THREE.Group();
+    
+    // Half Torus
+    const archGeom = new THREE.TorusGeometry(0.6, 0.14, 16, 64, Math.PI);
+    const arch = new THREE.Mesh(archGeom, shackleMat);
+    shackleGroup.add(arch);
+
+    // Left Leg
+    const legGeom = new THREE.CylinderGeometry(0.14, 0.14, 0.8, 16);
+    const leftLeg = new THREE.Mesh(legGeom, shackleMat);
+    leftLeg.position.x = -0.6;
+    leftLeg.position.y = -0.4;
+    shackleGroup.add(leftLeg);
+
+    // Right Leg
+    const rightLeg = new THREE.Mesh(legGeom, shackleMat);
+    rightLeg.position.x = 0.6;
+    rightLeg.position.y = -0.4;
+    shackleGroup.add(rightLeg);
+
+    lockGroup.add(shackleGroup);
+
+    // Initial Position (Unlocked)
+    let shackleTargetY = 0.9;
+    shackleGroup.position.y = shackleTargetY;
+
+    // 3. Adding Professional SaaS Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    // Spotlight purple reflecting off metallic body
+    const purpleLight = new THREE.SpotLight(0x8b5cf6, 6, 15, Math.PI / 4, 0.5, 1);
+    purpleLight.position.set(4, 5, 4);
+    scene.add(purpleLight);
+
+    // PointLight cyan reflecting off metallic shackle
+    const cyanLight = new THREE.PointLight(0x2dd4bf, 8, 12);
+    cyanLight.position.set(-4, 3, 3);
+    scene.add(cyanLight);
+
+    // Top general direction light
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(0, 8, 2);
+    scene.add(dirLight);
+
+    // 4. Mouse Interactive Parallax
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) - 0.5;
+      mouseY = (e.clientY / window.innerHeight) - 0.5;
+    });
+
+    // 5. Expose trigger locking globally so terminal simulator can invoke it!
+    window.triggerLockAnimation = function(isLocked, spin = false) {
+      shackleTargetY = isLocked ? 0.35 : 0.9;
+      if (spin) {
+        lockGroup.rotation.y += Math.PI * 2; // Smooth 360 degree spin!
+      }
+    };
+
+    // 6. Render Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Smoothly interpolate shackle slide (locking action)
+      shackleGroup.position.y += (shackleTargetY - shackleGroup.position.y) * 0.15;
+
+      // Smoothly interpolate lock rotation looking at mouse cursor
+      targetX = mouseX * 0.8;
+      targetY = mouseY * 0.5;
+
+      lockGroup.rotation.y += (targetX - lockGroup.rotation.y) * 0.08;
+      lockGroup.rotation.x += (targetY - lockGroup.rotation.x) * 0.08;
+
+      // Continuous subtle idle float animation
+      lockGroup.position.y = -0.2 + Math.sin(Date.now() * 0.0015) * 0.12;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // 7. Handle window resize gracefully
+    window.addEventListener('resize', () => {
+      if (!container.clientWidth || !container.clientHeight) return;
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+  }
+
+  // Launch 3D initialization
+  init3DLock();
 });
