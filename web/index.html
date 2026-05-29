@@ -182,38 +182,89 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main</pre>
         <!-- Sidebar Navigation -->
         <div class="docs-sidebar">
           <a href="#doc-install" class="doc-nav-link active">1. Installation</a>
-          <a href="#doc-encrypt" class="doc-nav-link">2. Encrypt Secrets</a>
-          <a href="#doc-run" class="doc-nav-link">3. Run Injector</a>
-          <a href="#doc-hook" class="doc-nav-link">4. Install Git Guard</a>
+          <a href="#doc-create" class="doc-nav-link">2. Create Secrets</a>
+          <a href="#doc-encrypt" class="doc-nav-link">3. Encrypt & Secure</a>
+          <a href="#doc-run" class="doc-nav-link">4. In-Memory Run</a>
+          <a href="#doc-edit" class="doc-nav-link">5. Editing Secrets</a>
+          <a href="#doc-hook" class="doc-nav-link">6. Git Guard Hook</a>
+          <a href="#doc-cicd" class="doc-nav-link">7. CI/CD & Automation</a>
         </div>
 
         <!-- Document View -->
         <div class="docs-content">
+          <!-- Page 1: Installation -->
           <div class="doc-block" id="doc-install">
             <h3>1. Installation</h3>
-            <p>Install the package globally on your machine, or run it dynamically with <code>npx</code>:</p>
+            <p>Install the <code>env-secret-lock</code> utility globally on your machine using npm:</p>
             <pre><code>npm install -g env-secret-lock</code></pre>
+            <p>Alternatively, you can skip installation and run commands dynamically using <code>npx</code>:</p>
+            <pre><code>npx env-secret-lock --help</code></pre>
           </div>
 
+          <!-- Page 2: Create Secrets -->
+          <div class="doc-block" id="doc-create">
+            <h3>2. Create Plaintext Secrets</h3>
+            <p>Create a standard, plaintext <code>.env</code> file at the root of your Node/Python/Go project directory:</p>
+            <pre><code>PORT=3000
+DATABASE_URL=postgresql://db_user:password@localhost:5432/main
+API_KEY=sk_live_51Ny8BzH...</code></pre>
+            <p>Fill it with all your sensitive development keys, tokens, and database passwords just as you normally do.</p>
+          </div>
+
+          <!-- Page 3: Encrypt & Secure -->
           <div class="doc-block" id="doc-encrypt">
-            <h3>2. Encrypt Secrets</h3>
-            <p>Convert your plaintext <code>.env</code> file into a highly secure <code>.env.enc</code> file using AES-256-GCM:</p>
+            <h3>3. Encrypt & Secure</h3>
+            <p>Convert your plaintext credentials into a highly secure, authenticated binary metadata structure at rest:</p>
             <pre><code>secret-lock encrypt</code></pre>
-            <p>You will be prompted to enter and confirm your master password securely. Afterwards, add your plaintext <code>.env</code> file to <code>.gitignore</code>.</p>
+            <p>You will be prompted securely to <strong>choose and confirm your Master Password</strong>. Once entered:</p>
+            <ol style="margin-left: 1.5rem; margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 0.95rem;">
+              <li>A secure <code>.env.enc</code> file is created using AES-256-GCM authenticated encryption.</li>
+              <li>You can now **delete the plaintext <code>.env</code> file** from your disk. Plaintext secrets no longer touch the drive!</li>
+            </ol>
+            <p class="tip">🛡️ <strong>Note:</strong> We have automatically configured your local project's <code>.gitignore</code> to ensure plaintext <code>.env</code> is never accidentally pushed to GitHub.</p>
           </div>
 
+          <!-- Page 4: In-Memory Run -->
           <div class="doc-block" id="doc-run">
-            <h3>3. Run Injector</h3>
-            <p>Launch your project with secrets decrypted directly into memory. They will reside only in process memory without hitting the disk:</p>
+            <h3>4. In-Memory Runtime Injection</h3>
+            <p>Boot your project with your secrets safely decrypted directly into memory on startup:</p>
             <pre><code>secret-lock run "node index.js"</code></pre>
-            <p class="tip">💡 <strong>CI/CD Tip:</strong> In non-interactive environments, export <code>SECRET_LOCK_PASSWORD=yourpass</code> to run without interactive prompts.</p>
+            <p>You will be prompted to type in your **Master Password**. Once verified:</p>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 0.95rem;">
+              <li>The CLI decrypts <code>.env.enc</code> inside memory.</li>
+              <li>Injects the key-value variables directly into <code>process.env</code> of your child process.</li>
+              <li>Launches your app. Plaintext secrets are never written to disk, protecting them from physical access theft.</li>
+            </ul>
           </div>
 
+          <!-- Page 5: Editing Secrets -->
+          <div class="doc-block" id="doc-edit">
+            <h3>5. How to Add or Edit Secrets</h3>
+            <p>Need to add a new API key or change a password? Simply follow this secure loop:</p>
+            <ol style="margin-left: 1.5rem; margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 0.95rem;">
+              <li><strong>Decrypt the file:</strong> Run <code>secret-lock decrypt</code> and enter your master password.</li>
+              <li><strong>Edit your variables:</strong> Open the restored plaintext <code>.env</code> and make your edits.</li>
+              <li><strong>Re-encrypt:</strong> Run <code>secret-lock encrypt</code> and re-enter your password to update <code>.env.enc</code>.</li>
+              <li><strong>Delete the plaintext:</strong> Delete the raw <code>.env</code> from your disk to keep your machine safe.</li>
+            </ol>
+          </div>
+
+          <!-- Page 6: Git Guard Hook -->
           <div class="doc-block" id="doc-hook">
-            <h3>4. Install Git Guard</h3>
-            <p>Add a lightweight pre-commit hook to automatically intercept git commits that contain raw, plaintext env files:</p>
+            <h3>6. Install Git-Guard Safety Protection</h3>
+            <p>Prevent embarrassing secret leaks to GitHub. Install our automated Git blocker hook:</p>
             <pre><code>secret-lock hook install</code></pre>
-            <p>To remove the hook at any time, run <code>secret-lock hook uninstall</code>.</p>
+            <p>If you or a teammate ever attempt to commit an unencrypted plaintext <code>.env</code> file, Git will instantly block the commit and output explicit instructions on how to secure it first.</p>
+            <p class="tip">💡 To remove the pre-commit protection at any time, run <code>secret-lock hook uninstall</code>.</p>
+          </div>
+
+          <!-- Page 7: CI/CD & Automation -->
+          <div class="doc-block" id="doc-cicd">
+            <h3>7. CI/CD & Production Automation</h3>
+            <p>In non-interactive environments (such as GitHub Actions, Docker, Vercel, Render, or Heroku) where you cannot type a password, simply export the master password as an environment variable:</p>
+            <pre><code>export SECRET_LOCK_PASSWORD="your-master-password"
+secret-lock run "npm start"</code></pre>
+            <p>The CLI will automatically detect the variable, decrypt in memory, and bypass the interactive prompt.</p>
           </div>
         </div>
       </div>
