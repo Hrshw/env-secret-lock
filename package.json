@@ -8,7 +8,8 @@
     "secret-lock": "bin/secret-lock.js"
   },
   "scripts": {
-    "test": "node test/verify.js"
+    "test": "node test/verify.js",
+    "postinstall": "node scripts/postinstall.js"
   },
   "keywords": [
     "secrets",

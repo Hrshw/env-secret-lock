@@ -142,6 +142,22 @@ program
     }
   });
 
+// Feedback Command
+program
+  .command('feedback')
+  .alias('f')
+  .description('Share your feedback, report bugs, or request features')
+  .action(() => {
+    console.log(`\n${C_CYAN}╭────────────────────────────────────────────────────────╮${C_RESET}`);
+    console.log(`${C_CYAN}│${C_RESET}  ${C_BOLD}✦ secret-lock feedback ✦${C_RESET}                            ${C_CYAN}│${C_RESET}`);
+    console.log(`${C_CYAN}├────────────────────────────────────────────────────────┤${C_RESET}`);
+    console.log(`${C_CYAN}│${C_RESET}  ${C_GREEN}Your feedback shapes the future of this tool!${C_RESET}         ${C_CYAN}│${C_RESET}`);
+    console.log(`${C_CYAN}│${C_RESET}                                                        ${C_CYAN}│${C_RESET}`);
+    console.log(`${C_CYAN}│${C_RESET}  💬 ${C_BOLD}Found a bug or have a feature idea?${C_RESET}               ${C_CYAN}│${C_RESET}`);
+    console.log(`${C_CYAN}│${C_RESET}  👉 ${C_CYAN}https://github.com/Hrshw/env-secret-lock/issues${C_RESET}     ${C_CYAN}│${C_RESET}`);
+    console.log(`${C_CYAN}╰────────────────────────────────────────────────────────╯${C_RESET}\n`);
+  });
+
 // Handle default/empty executions
 if (!process.argv.slice(2).length) {
   program.outputHelp();
