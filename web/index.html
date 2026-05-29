@@ -21,6 +21,9 @@
   <meta property="twitter:description" content="Stop leaking your API keys. A local-first, zero-dependency CLI to encrypt your .env files and prevent accidental git commits.">
   <meta property="twitter:image" content="https://hrshw.github.io/env-secret-lock/og-image.png">
 
+  <!-- Three.js Library for 2026 3D WebGL Padlock Graphics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <!-- Modern premium typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,15 +60,20 @@
   <!-- Hero Section -->
   <header class="hero">
     <div class="container hero-container">
-      <div class="badge">🔒 Local-First & Zero-Dependency</div>
-      <h1 class="hero-title">Stop leaving secrets in <span class="gradient-text">plaintext .env</span> files</h1>
-      <p class="hero-subtitle">
-        Secure your API keys, tokens, and database passwords at rest. Inject them into memory at runtime. Guard your Git repository from accidental leaks. All without a heavy cloud platform.
-      </p>
-      
-      <div class="hero-actions">
-        <code class="install-cmd">npm install -g env-secret-lock</code>
-        <a href="#demo" class="btn btn-primary">Try Interactive Sandbox</a>
+      <div class="hero-content">
+        <div class="badge">🔒 Local-First & Zero-Dependency</div>
+        <h1 class="hero-title">Stop leaving secrets in <span class="gradient-text">plaintext .env</span> files</h1>
+        <p class="hero-subtitle">
+          Secure your API keys, tokens, and database passwords at rest. Inject them into memory at runtime. Guard your Git repository from accidental leaks. All without a heavy cloud platform.
+        </p>
+        
+        <div class="hero-actions">
+          <code class="install-cmd">npm install -g env-secret-lock</code>
+          <a href="#demo" class="btn btn-primary">Try Interactive Sandbox</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div id="canvas-3d-container"></div>
       </div>
     </div>
   </header>
