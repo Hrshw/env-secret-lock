@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="googlef77e922f7f1fb7b2" />
-  <title>secret-lock — Local-First Secret Manager for Solo Devs</title>
+  <meta name="description" content="Stop leaking your API keys. A local-first, zero-dependency CLI to encrypt your .env files and prevent accidental git commits. Works seamlessly both locally and in production." />
+  <meta name="robots" content="index, follow" />
+  <title>secret-lock — Local-First Secret Manager for Solo Devs & Secure .env Files</title>
   <!-- Favicon Lock SVG (Custom Purple Lock Logo) -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'%3E%3C/path%3E%3C/svg%3E">
   
@@ -197,6 +199,60 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main</pre>
           </div>
           <h3 class="feature-title">Git-Guard Pre-Commit Protection</h3>
           <p class="feature-desc">Install our automated Git pre-commit hook in one click. Blocks attempts to commit plaintext credentials, preventing embarrassing leaks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us / Comparison Section -->
+  <section class="why-us-section" id="why-us">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why <span class="gradient-text">secret-lock</span>?</h2>
+        <p class="section-subtitle">How we compare to heavy cloud managers and other popular workflows.</p>
+      </div>
+
+      <div class="comparison-grid">
+        <!-- Vault / AWS Secrets Mgr -->
+        <div class="comparison-card">
+          <div class="comparison-card-header">
+            <span class="comparison-card-badge red">Heavy Cloud</span>
+            <h3 class="comparison-card-title">Cloud Vaults / AWS SM</h3>
+          </div>
+          <ul class="comparison-card-list">
+            <li>❌ <strong>Complex setups:</strong> Requires network config, accounts, and server endpoints.</li>
+            <li>❌ <strong>Infrastructure cost:</strong> Expensive monthly plans or cluster hosting fees.</li>
+            <li>❌ <strong>Network latency:</strong> Adds latency on boot while fetching secrets over the network.</li>
+            <li>❌ <strong>Too heavy:</strong> Overkill for local coding, side projects, or micro-teams.</li>
+          </ul>
+        </div>
+
+        <!-- secret-lock (Featured) -->
+        <div class="comparison-card featured">
+          <div class="comparison-card-header">
+            <span class="comparison-card-badge green">Local-First</span>
+            <h3 class="comparison-card-title">secret-lock</h3>
+          </div>
+          <ul class="comparison-card-list">
+            <li>✅ <strong>Zero-Dependency CLI:</strong> Set up and encrypt in under 30 seconds.</li>
+            <li>✅ <strong>Works Local & Prod:</strong> Decrypts directly into memory on boot.</li>
+            <li>✅ <strong>Git-Guard Hook:</strong> Instantly blocks accidental raw `.env` commits.</li>
+            <li>✅ <strong>100% Free & Fast:</strong> Local AES-256-GCM authenticated cryptography.</li>
+          </ul>
+        </div>
+
+        <!-- GitHub Secrets -->
+        <div class="comparison-card">
+          <div class="comparison-card-header">
+            <span class="comparison-card-badge blue">CI/CD Only</span>
+            <h3 class="comparison-card-title">GitHub Secrets</h3>
+          </div>
+          <ul class="comparison-card-list">
+            <li>❌ <strong>Ecosystem-locked:</strong> Confined entirely to GitHub Actions environments.</li>
+            <li>❌ <strong>No local test:</strong> Cannot decrypt or test variables inside your local terminal.</li>
+            <li>❌ <strong>Manual sync:</strong> Sharing secrets with other developers requires manual copy-paste.</li>
+            <li>❌ <strong>Rigid:</strong> Hard to run across other local workflows, scripts, or non-GitHub hosts.</li>
+          </ul>
         </div>
       </div>
     </div>
