@@ -1383,3 +1383,161 @@ section {
   color: #fff;
   text-decoration: underline;
 }
+
+/* ==========================================================================
+   Why Us / Comparison Section Styling
+   ========================================================================== */
+.why-us-section {
+  position: relative;
+  background-color: rgba(17, 25, 40, 0.15);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+body.light-theme .why-us-section {
+  background-color: rgba(15, 23, 42, 0.02);
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.comparison-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: var(--glass-blur);
+}
+
+.comparison-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--card-hover);
+}
+
+.comparison-card.featured {
+  border: 2px solid var(--color-purple);
+  box-shadow: 0 10px 30px -10px var(--color-purple-glow);
+  position: relative;
+  transform: scale(1.03);
+}
+
+body.light-theme .comparison-card.featured {
+  border-color: #6d28d9;
+  box-shadow: 0 10px 25px -8px rgba(109, 40, 217, 0.15);
+}
+
+.comparison-card.featured:hover {
+  transform: scale(1.03) translateY(-5px);
+  box-shadow: 0 15px 35px -5px rgba(139, 92, 246, 0.35);
+}
+
+body.light-theme .comparison-card.featured:hover {
+  box-shadow: 0 15px 30px -5px rgba(109, 40, 217, 0.25);
+}
+
+.comparison-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.comparison-card-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.comparison-card-badge.red {
+  background-color: rgba(244, 63, 94, 0.08);
+  color: var(--color-red);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+body.light-theme .comparison-card-badge.red {
+  background-color: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+  border-color: rgba(220, 38, 38, 0.2);
+}
+
+.comparison-card-badge.green {
+  background-color: rgba(16, 185, 129, 0.08);
+  color: var(--color-green);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+body.light-theme .comparison-card-badge.green {
+  background-color: rgba(22, 163, 74, 0.08);
+  color: #15803d;
+  border-color: rgba(22, 163, 74, 0.2);
+}
+
+.comparison-card-badge.blue {
+  background-color: rgba(59, 130, 246, 0.08);
+  color: var(--color-blue);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+body.light-theme .comparison-card-badge.blue {
+  background-color: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.comparison-card-title {
+  font-family: var(--font-title);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.comparison-card-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comparison-card-list li {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+body.light-theme .comparison-card-list li {
+  color: #334155;
+}
+
+.comparison-card-list strong {
+  color: var(--text-primary);
+}
+
+/* Responsive adjustments for comparison section */
+@media (max-width: 968px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  
+  .comparison-card.featured {
+    transform: scale(1);
+  }
+  
+  .comparison-card.featured:hover {
+    transform: translateY(-5px);
+  }
+}
