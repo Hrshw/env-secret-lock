@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hrshw.github.io/env-secret-lock/sitemap.xml
