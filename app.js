@@ -127,12 +127,20 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
   // ----------------------------------------------------
   // Terminal Custom Stream Output
   // ----------------------------------------------------
+  function scrollToBottom() {
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+    // Delayed fallback for browser layout rendering cycles
+    setTimeout(() => {
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }, 10);
+  }
+
   function createLine(text, className = 'output') {
     const line = document.createElement('div');
     line.className = `terminal-line ${className}`;
     line.innerHTML = text;
     terminalBody.insertBefore(line, terminalInput.parentElement);
-    terminalBody.scrollTop = terminalBody.scrollHeight;
+    scrollToBottom();
     return line;
   }
 
@@ -284,6 +292,10 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
     }
   });
 
+  // Auto-scroll when typing or focusing
+  terminalInput.addEventListener('input', scrollToBottom);
+  terminalInput.addEventListener('focus', scrollToBottom);
+
   // ----------------------------------------------------
   // Preset Button Click Handlers (Simulators)
   // ----------------------------------------------------
@@ -356,6 +368,7 @@ DATABASE_URL=postgresql://db_user:my_secret_pass@localhost:5432/main`;
         if (index < text.length) {
           terminalInput.value += text[index];
           index++;
+          scrollToBottom();
         } else {
           clearInterval(interval);
           resolve();
