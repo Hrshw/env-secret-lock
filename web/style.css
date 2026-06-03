@@ -811,6 +811,7 @@ section {
   padding: 1.2rem;
   flex-grow: 1;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   font-family: var(--font-mono);
   font-size: 0.85rem;
   line-height: 1.5;
@@ -819,6 +820,46 @@ section {
   gap: 0.5rem;
   color: #ccd6f6;
 }
+
+/* Custom Premium scrollbars for terminal and code views */
+.terminal-body::-webkit-scrollbar,
+.preview-code::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.terminal-body::-webkit-scrollbar-track,
+.preview-code::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb,
+.preview-code::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover,
+.preview-code::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.55);
+}
+
+body.light-theme .terminal-body::-webkit-scrollbar-track,
+body.light-theme .preview-code::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .terminal-body::-webkit-scrollbar-thumb,
+body.light-theme .preview-code::-webkit-scrollbar-thumb {
+  background: rgba(109, 40, 217, 0.25);
+}
+
+body.light-theme .terminal-body::-webkit-scrollbar-thumb:hover,
+body.light-theme .preview-code::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 40, 217, 0.45);
+}
+
 
 .terminal-line {
   white-space: pre-wrap;
